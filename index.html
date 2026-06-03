@@ -396,7 +396,7 @@ function updateKeyNavBtn(){
   else { btn.style.color=''; btn.title='Set API key'; }
 }
 
-async function groqGenerate(prompt){
+async function groqGenerate(prompt, maxTokens=2500){
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method:'POST',
     headers:{
@@ -406,7 +406,7 @@ async function groqGenerate(prompt){
     body:JSON.stringify({
       model:'llama-3.3-70b-versatile',
       messages:[{role:'user', content:prompt}],
-      max_tokens:1200,
+      max_tokens: maxTokens,
       temperature:0.8
     })
   });
@@ -602,63 +602,59 @@ async function openPanel(topic){
 }
 
 async function generateArticle(topic){
-  const prompt = `Write a compelling, educational article about "${topic.title}" for the category "${CAT_LABELS[topic.cat]}".
+  const prompt = `Write a long, deeply informative and engaging article about "${topic.title}" for the category "${CAT_LABELS[topic.cat]}".
 
 Format as clean HTML using only these tags: <p>, <h3>, <div class="callout">.
-The callout div is for a fascinating fact or quote — use it once.
-Write 4–6 paragraphs total with 2–3 section headings (h3 tags).
-Make it genuinely informative, engaging, and intellectually stimulating.
-Use concrete examples, surprising facts, and real data where possible.
-Aim for approximately ${topic.time} minutes of reading time.
+Use the callout div 2–3 times for fascinating facts, statistics, or memorable quotes.
+Write 8–10 substantial paragraphs with 4–5 section headings (h3 tags).
+Each paragraph must be at least 4–5 sentences long.
+Include: real statistics and data, historical context, expert opinions or research findings, real-world examples, practical takeaways, and surprising counterintuitive facts.
+Make it feel like a well-researched magazine article — thorough, nuanced, and intellectually rewarding.
 Start directly with a <p> tag — no intro sentence, no title repeat.
 Output only the HTML content, nothing else.`;
 
-  const text = await groqGenerate(prompt);
+  const text = await groqGenerate(prompt, 2500);
   return text.replace(/```html|```/g,'').trim();
 }
 
 async function generateNewTopics(justReadTopic){
-  if(!getApiKey()) return; // no key, skip silently
+  if(!getApiKey()) return;
   const existingTitles = state.topics.map(t=>t.title).join(', ');
   const cat1 = weightedCat();
-  let cat2 = weightedCat(); 
+  let cat2 = weightedCat();
   if(cat2===cat1) cat2 = weightedCat();
 
   showToast('Unlocking new topics for you…');
   try{
-    const prompt = `You are a general knowledge curator. Generate exactly 3 new, interesting topic ideas.
+    const prompt = `You are a general knowledge curator. Generate exactly 3 new topic ideas.
 
-The reader just finished reading: "${justReadTopic.title}" (category: ${CAT_LABELS[justReadTopic.cat]})
+The reader just finished: "${justReadTopic.title}" (${CAT_LABELS[justReadTopic.cat]})
 
-Generate:
-- 1 topic closely related to what they just read (a natural "read next")
-- 1 topic in the category: ${CAT_LABELS[cat1]}
-- 1 topic in the category: ${CAT_LABELS[cat2]}
+Rules:
+- Topic 1: closely related to what they just read
+- Topic 2: category must be ${CAT_LABELS[cat1]}
+- Topic 3: category must be ${CAT_LABELS[cat2]}
+- Do NOT repeat any of these: ${existingTitles.slice(0,400)}
 
-Focus areas in order of preference: Business, Science, Psychology, Self-Help, Sports, Health, Wealth, History, Current Affairs.
+You MUST respond with ONLY a raw JSON array. No markdown. No explanation. No backticks. Just the array:
+[{"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"},{"title":"...","cat":"...","desc":"...","time":"5","diff":"Beginner"},{"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"}]
 
-IMPORTANT: Do NOT suggest any of these already-existing topics: ${existingTitles.slice(0,500)}
+cat must be exactly one of: business, science, psychology, selfhelp, sports, health, wealth, history, currentaffairs, philosophy, technology
+desc must be 1–2 sentences, specific and compelling.`;
 
-Respond with ONLY a JSON array, no markdown, no explanation:
-[
-  {"title":"...","cat":"...","desc":"...","time":"5","diff":"Intermediate"},
-  {"title":"...","cat":"...","desc":"...","time":"5","diff":"Beginner"},
-  {"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"}
-]
+    const raw = await groqGenerate(prompt, 600);
 
-cat must be one of: business, science, psychology, selfhelp, sports, health, wealth, history, currentaffairs, philosophy, technology
-desc must be 1–2 sentences, compelling and specific (not generic).
-time must be a number string between "4" and "8".`;
+    // Extract JSON array robustly
+    const match = raw.match(/\[[\s\S]*\]/);
+    if(!match) throw new Error('No JSON array found in response');
+    const newTopics = JSON.parse(match[0]);
 
-    const raw = await groqGenerate(prompt);
-    const clean = raw.replace(/```json|```/g,'').trim();
-    const newTopics = JSON.parse(clean);
     newTopics.forEach(t=>{
       if(t.title && t.cat && t.desc){
         state.topics.push({
           id: 'ai_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
           cat: t.cat, title: t.title, desc: t.desc,
-          time: t.time||'5', diff: t.diff||'Intermediate', isNew: true
+          time: t.time||'6', diff: t.diff||'Intermediate', isNew: true
         });
       }
     });
@@ -666,32 +662,31 @@ time must be a number string between "4" and "8".`;
     renderGrid();
     updateStats();
     setTimeout(()=>{ state.topics.forEach(t=>{ if(t.isNew) t.isNew=false; }); saveState(); }, 4000);
-  } catch(e){ console.warn('Topic gen failed:',e); }
+  } catch(e){ console.warn('Topic gen failed:', e.message); }
   hideToast();
 }
 
 function markRead(){
   const btn = document.getElementById('mark-btn');
-  if(!currentTopic){ console.warn('No currentTopic'); return; }
+  if(!currentTopic){ return; }
   const topicId = currentTopic.id;
-  const alreadyRead = [...state.readIds].includes(topicId);
-  if(alreadyRead) return;
+  if([...state.readIds].includes(topicId)) return;
 
-  // Update button immediately before anything else
+  // Update button immediately
   if(btn){ btn.innerHTML='✓ Marked as read!'; btn.classList.add('done'); btn.disabled=true; }
 
-  // Add to read set
-  state.readIds = new Set([...state.readIds, topicId]);
+  // Add to read set and persist
+  state.readIds.add(topicId);
   updateStreak();
   saveState();
 
-  // Defer UI updates so button state is visible first
-  setTimeout(()=>{
-    updateStats();
-    renderGrid();
-    const t = state.topics.find(x=>x.id===topicId);
-    if(t) generateNewTopics(t);
-  }, 300);
+  // Update UI
+  updateStats();
+  renderGrid();
+
+  // Generate new topics after a short delay
+  const t = state.topics.find(x=>x.id===topicId);
+  if(t) setTimeout(()=>generateNewTopics(t), 500);
 }
 
 function updateStreak(){
