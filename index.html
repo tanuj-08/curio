@@ -5,755 +5,794 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Curio — Your Knowledge Feed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --sand:#F6F3ED;
-  --cream:#FDFCF9;
-  --ink:#18171A;
-  --ink2:#4A4852;
-  --ink3:#9A96A4;
-  --gold:#B8862A;
-  --gold-bg:#F5EDD6;
-  --gold-border:rgba(184,134,42,0.25);
-  --border:rgba(24,23,26,0.09);
-  --border2:rgba(24,23,26,0.16);
-  --green:#1A6B45;
-  --green-bg:#E6F2EB;
-  --radius:12px;
-  --radius-sm:8px;
+  --sand:#F6F3ED;--cream:#FDFCF9;--ink:#18171A;--ink2:#4A4852;--ink3:#9A96A4;
+  --gold:#B8862A;--gold-bg:#F5EDD6;--gold-border:rgba(184,134,42,0.25);
+  --border:rgba(24,23,26,0.09);--border2:rgba(24,23,26,0.16);
+  --green:#1A6B45;--green-bg:#E6F2EB;--radius:12px;--rsm:8px;
 }
 html{font-size:16px;-webkit-text-size-adjust:100%}
-body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;line-height:1.6}
+body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;line-height:1.6;-webkit-tap-highlight-color:transparent}
 
-/* ── NAV ── */
-.nav{background:var(--cream);border-bottom:1px solid var(--border);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:50}
-.logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:-0.02em;display:flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none}
+/* NAV */
+.nav{background:var(--cream);border-bottom:1px solid var(--border);padding:0 1.1rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:50}
+.logo{font-family:'Playfair Display',serif;font-size:1.25rem;letter-spacing:-0.02em;display:flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none}
 .logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.nav-right{display:flex;align-items:center;gap:10px}
-.streak{display:flex;align-items:center;gap:5px;background:var(--gold-bg);color:var(--gold);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;border:1px solid var(--gold-border)}
-.nav-btn{background:none;border:1px solid var(--border2);border-radius:var(--radius-sm);padding:6px 11px;font-size:0.75rem;color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
-.nav-btn:hover{border-color:var(--ink);color:var(--ink)}
+.nav-r{display:flex;align-items:center;gap:8px}
+.streak-pill{display:flex;align-items:center;gap:4px;background:var(--gold-bg);color:var(--gold);padding:4px 10px;border-radius:20px;font-size:0.74rem;font-weight:600;border:1px solid var(--gold-border)}
+.nbtn{background:none;border:1px solid var(--border2);border-radius:var(--rsm);padding:6px 10px;font-size:0.74rem;color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif}
+.nbtn:hover{border-color:var(--ink);color:var(--ink)}
+.ver{font-size:0.6rem;color:var(--ink3);padding:3px 7px;background:var(--sand);border-radius:4px;font-weight:600}
 
-/* ── HERO ── */
-.hero{background:var(--ink);color:#fff;padding:1.5rem 1.25rem 1.25rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);pointer-events:none}
-.hero-eyebrow{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);font-weight:600;margin-bottom:0.45rem}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,1.75rem);font-weight:500;line-height:1.25;margin-bottom:1rem}
+/* HERO */
+.hero{background:var(--ink);color:#fff;padding:1.4rem 1.1rem 1.2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);pointer-events:none}
+.hero-eye{font-size:0.67rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);font-weight:600;margin-bottom:0.4rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.25rem,4vw,1.7rem);font-weight:500;line-height:1.25;margin-bottom:0.9rem}
 .hero h1 em{color:var(--gold);font-style:italic}
-.today-card{background:var(--cream);border-radius:var(--radius);display:flex;cursor:pointer;transition:transform 0.18s;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
-.today-card:hover{transform:translateY(-1px)}
-.today-accent{width:4px;background:var(--gold);flex-shrink:0}
-.today-body{padding:0.9rem 1rem;flex:1;min-width:0}
-.today-meta{display:flex;align-items:center;gap:8px;margin-bottom:0.3rem;flex-wrap:wrap}
-.today-pill{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.09em;background:var(--gold-bg);color:var(--gold);padding:2px 7px;border-radius:4px;font-weight:600}
-.today-time{font-size:0.72rem;color:var(--ink3)}
-.today-title{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:0.2rem}
-.today-desc{font-size:0.76rem;color:var(--ink2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.today-arrow{display:flex;align-items:center;padding:0 1rem;color:var(--gold);font-size:0.9rem;flex-shrink:0}
+.t-card{background:var(--cream);border-radius:var(--radius);display:flex;cursor:pointer;overflow:hidden;border:1px solid rgba(255,255,255,0.08);-webkit-tap-highlight-color:transparent}
+.t-card-accent{width:4px;background:var(--gold);flex-shrink:0}
+.t-card-body{padding:0.85rem 1rem;flex:1;min-width:0}
+.t-card-meta{display:flex;align-items:center;gap:8px;margin-bottom:0.25rem;flex-wrap:wrap}
+.t-pill{font-size:0.63rem;text-transform:uppercase;letter-spacing:0.09em;background:var(--gold-bg);color:var(--gold);padding:2px 6px;border-radius:4px;font-weight:600}
+.t-time-lbl{font-size:0.7rem;color:var(--ink3)}
+.t-card-title{font-family:'Playfair Display',serif;font-size:0.93rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:0.18rem}
+.t-card-desc{font-size:0.74rem;color:var(--ink2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.t-card-arrow{display:flex;align-items:center;padding:0 1rem;color:var(--gold);font-size:1.1rem;flex-shrink:0}
 
-/* ── MAIN ── */
-.main{padding:1.5rem 1.25rem;max-width:900px;margin:0 auto}
+/* MAIN */
+.main{padding:1.4rem 1.1rem;max-width:900px;margin:0 auto}
 
-/* ── STATS ── */
-.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-.stat-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.75rem 0.9rem;text-align:center}
-.stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--ink);display:block;line-height:1}
-.stat-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--ink3);margin-top:3px;display:block}
-.progress-wrap{margin-bottom:1.75rem}
-.progress-top{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink3);margin-bottom:5px}
-.progress-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-.progress-fill{height:100%;background:var(--gold);border-radius:3px;transition:width 0.6s ease}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:1.4rem}
+.stat-box{background:var(--cream);border:1px solid var(--border);border-radius:var(--rsm);padding:0.7rem 0.5rem;text-align:center}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:var(--ink);display:block;line-height:1}
+.stat-l{font-size:0.63rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--ink3);margin-top:3px;display:block}
+.prog-wrap{margin-bottom:1.6rem}
+.prog-top{display:flex;justify-content:space-between;font-size:0.71rem;color:var(--ink3);margin-bottom:5px}
+.prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width 0.5s ease}
 
-/* ── FILTER ── */
-.filter-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:1.25rem;-ms-overflow-style:none;scrollbar-width:none}
-.filter-scroll::-webkit-scrollbar{display:none}
-.cat-btn{flex-shrink:0;padding:5px 13px;border-radius:20px;font-size:0.74rem;font-weight:500;border:1px solid var(--border2);background:var(--cream);color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;white-space:nowrap}
-.cat-btn:hover{border-color:var(--ink);color:var(--ink)}
-.cat-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* FILTERS */
+.filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;margin-bottom:1.1rem;-ms-overflow-style:none;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.fbtn{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:0.72rem;font-weight:500;border:1px solid var(--border2);background:var(--cream);color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.fbtn:hover{border-color:var(--ink);color:var(--ink)}
+.fbtn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-/* ── GRID ── */
-.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:2rem}
-.topic-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;gap:0.45rem;position:relative;overflow:hidden}
-.topic-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.2s;border-radius:var(--radius) var(--radius) 0 0}
-.topic-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(24,23,26,0.07);border-color:var(--border2)}
-.topic-card:hover::after{opacity:1}
-.topic-card.new-topic{animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
-@keyframes popIn{from{opacity:0;transform:scale(0.92) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.topic-card.read-card{opacity:0.75}
-.read-dot{position:absolute;top:10px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--green)}
-.new-badge{position:absolute;top:8px;right:8px;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;background:#1A6B45;color:#fff;padding:2px 6px;border-radius:4px;font-weight:600}
-.topic-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.topic-title{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--ink);line-height:1.3;flex:1}
-.bm-btn{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.82rem;padding:0;flex-shrink:0;line-height:1;transition:color 0.15s}
-.bm-btn:hover,.bm-btn.bm-on{color:var(--gold)}
-.topic-desc{font-size:0.75rem;color:var(--ink2);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.topic-foot{display:flex;align-items:center;justify-content:space-between;margin-top:0.2rem}
-.t-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;padding:2px 7px;border-radius:4px;font-weight:600}
-.t-time{font-size:0.68rem;color:var(--ink3);display:flex;align-items:center;gap:3px}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px;margin-bottom:2rem}
+.card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:0.95rem 1.05rem;cursor:pointer;display:flex;flex-direction:column;gap:0.4rem;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;opacity:0;transition:opacity 0.2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(24,23,26,0.07);border-color:var(--border2)}
+.card:hover::before{opacity:1}
+.card.is-read{opacity:0.62}
+.card.is-new{animation:popin 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes popin{from{opacity:0;transform:scale(0.91) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.read-dot{position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--green)}
+.new-badge{position:absolute;top:7px;right:7px;font-size:0.58rem;text-transform:uppercase;letter-spacing:0.08em;background:var(--green);color:#fff;padding:2px 5px;border-radius:4px;font-weight:600}
+.card-head{display:flex;align-items:flex-start;gap:7px}
+.card-title{font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--ink);line-height:1.3;flex:1}
+.bmbtn{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.8rem;padding:0;flex-shrink:0;line-height:1}
+.bmbtn:hover,.bmbtn.on{color:var(--gold)}
+.card-desc{font-size:0.73rem;color:var(--ink2);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:0.15rem}
+.ctag{font-size:0.63rem;text-transform:uppercase;letter-spacing:0.08em;padding:2px 6px;border-radius:4px;font-weight:600}
+.ctim{font-size:0.66rem;color:var(--ink3)}
+.empty-msg{grid-column:1/-1;text-align:center;padding:2.5rem 1rem;color:var(--ink3);font-size:0.83rem}
 
-/* category colours */
-.cat-business .t-tag{background:#EBF4FB;color:#1D6FA8}.cat-business::after{background:#1D6FA8}
-.cat-science .t-tag{background:#EFECF9;color:#4B3D8F}.cat-science::after{background:#4B3D8F}
-.cat-psychology .t-tag{background:#E6F3F5;color:#1A6B7A}.cat-psychology::after{background:#1A6B7A}
-.cat-selfhelp .t-tag{background:var(--gold-bg);color:var(--gold)}.cat-selfhelp::after{background:var(--gold)}
-.cat-sports .t-tag{background:#E6F2EB;color:#1A6B45}.cat-sports::after{background:#1A6B45}
-.cat-health .t-tag{background:#FAECE7;color:#993C1D}.cat-health::after{background:#D85A30}
-.cat-wealth .t-tag{background:#EAF3DE;color:#3B6D11}.cat-wealth::after{background:#639922}
-.cat-history .t-tag{background:#F5EDE6;color:#7B4B2A}.cat-history::after{background:#7B4B2A}
-.cat-currentaffairs .t-tag{background:#FCEBEB;color:#A32D2D}.cat-currentaffairs::after{background:#E24B4A}
-.cat-philosophy .t-tag{background:#EEEDFE;color:#534AB7}.cat-philosophy::after{background:#534AB7}
-.cat-technology .t-tag{background:#E1F5EE;color:#0F6E56}.cat-technology::after{background:#1D9E75}
+/* Category colours */
+.cat-business .ctag,.cat-business.card .ctag{background:#EBF4FB;color:#1D6FA8}.cat-business::before{background:#1D6FA8}
+.cat-science .ctag{background:#EFECF9;color:#4B3D8F}.cat-science::before{background:#4B3D8F}
+.cat-psychology .ctag{background:#E6F3F5;color:#1A6B7A}.cat-psychology::before{background:#1A6B7A}
+.cat-selfhelp .ctag{background:var(--gold-bg);color:var(--gold)}.cat-selfhelp::before{background:var(--gold)}
+.cat-sports .ctag{background:#E6F2EB;color:#1A6B45}.cat-sports::before{background:#1A6B45}
+.cat-health .ctag{background:#FAECE7;color:#993C1D}.cat-health::before{background:#D85A30}
+.cat-wealth .ctag{background:#EAF3DE;color:#3B6D11}.cat-wealth::before{background:#639922}
+.cat-history .ctag{background:#F5EDE6;color:#7B4B2A}.cat-history::before{background:#7B4B2A}
+.cat-currentaffairs .ctag{background:#FCEBEB;color:#A32D2D}.cat-currentaffairs::before{background:#E24B4A}
+.cat-philosophy .ctag{background:#EEEDFE;color:#534AB7}.cat-philosophy::before{background:#534AB7}
+.cat-technology .ctag{background:#E1F5EE;color:#0F6E56}.cat-technology::before{background:#1D9E75}
 
-/* ── LOADING CARD ── */
-.loading-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.5rem}
-.skel{background:linear-gradient(90deg,var(--sand) 25%,var(--border) 50%,var(--sand) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px}
+/* SKELETONS */
+.skel{background:linear-gradient(90deg,var(--sand) 25%,#e5e1d8 50%,var(--sand) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:9px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-title{height:14px;width:80%}
-.skel-line{height:10px}
-.skel-line.w60{width:60%}
-.skel-line.w40{width:40%}
 
-/* ── PANEL (modal) ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(24,23,26,0.5);z-index:200;overflow-y:auto;padding:1rem;pointer-events:none}
-.overlay.open{display:flex;align-items:flex-start;justify-content:center;pointer-events:all}
-.panel{background:var(--cream);border-radius:16px;max-width:640px;width:100%;margin:auto;animation:slideUp 0.25s ease;position:relative}
-@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.panel-top{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--cream);z-index:10;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
-.panel-close{background:none;border:1px solid var(--border2);border-radius:var(--radius-sm);width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0;font-size:0.8rem;transition:all 0.15s}
-.panel-close:hover{background:var(--sand);color:var(--ink)}
-.p-cat{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:0.35rem}
-.p-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;line-height:1.25;color:var(--ink)}
-.panel-body{padding:1.25rem}
-.p-meta{display:flex;gap:1rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.p-meta span{font-size:0.75rem;color:var(--ink3);display:flex;align-items:center;gap:4px}
-.p-content{font-size:0.88rem;line-height:1.85;color:var(--ink2)}
-.p-content h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--ink);margin:1.2rem 0 0.4rem;font-weight:700}
-.p-content p{margin-bottom:0.8rem}
-.p-content .callout{background:var(--sand);border-left:3px solid var(--gold);padding:0.7rem 0.9rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.83rem;color:var(--ink);margin:0.9rem 0;font-style:italic}
-.p-loading{display:flex;flex-direction:column;gap:10px;padding:1rem 0}
-.mark-btn{display:inline-flex;align-items:center;gap:7px;margin-top:1.25rem;padding:9px 18px;background:var(--ink);color:#fff;border:none;border-radius:var(--radius-sm);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.mark-btn:hover{opacity:0.85}
-.mark-btn:active{transform:scale(0.97)}
-.mark-btn.done{background:var(--green);cursor:default}
-.mark-btn:disabled{opacity:0.7;cursor:default}
+/* OVERLAY base — pointer-events:none when closed so nothing is blocked */
+.overlay{display:none;position:fixed;inset:0;z-index:300;overflow-y:auto;padding:1rem;pointer-events:none}
+.overlay.open{display:flex;align-items:flex-start;justify-content:center;background:rgba(24,23,26,0.55);pointer-events:all}
 
-/* ── GENERATING TOAST ── */
-.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:20px;font-size:0.78rem;font-weight:500;display:none;align-items:center;gap:8px;z-index:300;white-space:nowrap}
+/* PANEL */
+.panel{background:var(--cream);border-radius:16px;max-width:660px;width:100%;margin:auto;animation:slideup 0.22s ease;position:relative}
+@keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ptop{padding:1.2rem 1.2rem 0.9rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--cream);z-index:10;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.pclose{background:none;border:1px solid var(--border2);border-radius:var(--rsm);width:31px;height:31px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0;font-size:1rem;line-height:1}
+.pclose:hover{background:var(--sand)}
+.pcat{font-size:0.67rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:0.3rem}
+.ptitle{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;line-height:1.25;color:var(--ink)}
+.pbody{padding:1.1rem 1.2rem}
+.pmeta{display:flex;gap:1rem;margin-bottom:1rem;padding-bottom:0.9rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.pmeta span{font-size:0.73rem;color:var(--ink3)}
+.pcontent{font-size:0.9rem;line-height:1.9;color:var(--ink2)}
+.pcontent h3{font-family:'Playfair Display',serif;font-size:1.03rem;color:var(--ink);margin:1.3rem 0 0.45rem;font-weight:700}
+.pcontent p{margin-bottom:0.85rem}
+.pcontent .callout{background:var(--sand);border-left:3px solid var(--gold);padding:0.72rem 0.95rem;border-radius:0 var(--rsm) var(--rsm) 0;font-size:0.84rem;color:var(--ink);margin:0.9rem 0;font-style:italic;line-height:1.6}
+.pactions{padding:0 1.2rem 1.4rem}
+.mark-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;background:var(--ink);color:#fff;border:none;border-radius:var(--rsm);font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s,opacity 0.2s;-webkit-tap-highlight-color:transparent}
+.mark-btn:hover:not([disabled]){opacity:0.85}
+.mark-btn.done{background:var(--green)}
+.mark-btn[disabled]{opacity:0.55;cursor:default}
+
+/* KEY MODAL — always on top */
+.keyoverlay{display:none;position:fixed;inset:0;background:rgba(24,23,26,0.78);z-index:700;align-items:center;justify-content:center;padding:1.1rem}
+.keyoverlay.open{display:flex}
+.keybox{background:var(--cream);border-radius:16px;width:100%;max-width:430px;padding:1.9rem 1.65rem}
+.keylogo{font-family:'Playfair Display',serif;font-size:1.35rem;display:flex;align-items:center;gap:7px;margin-bottom:0.35rem}
+.keysub{font-size:0.81rem;color:var(--ink3);margin-bottom:1.4rem;line-height:1.6}
+.keylbl{font-size:0.71rem;font-weight:600;color:var(--ink2);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.06em}
+.keyrow{display:flex;gap:7px;margin-bottom:0.45rem}
+.keyinp{flex:1;padding:9px 11px;border:1px solid var(--border2);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:0.84rem;color:var(--ink);background:var(--cream);outline:none}
+.keyinp:focus{border-color:var(--gold)}
+.keytog{background:none;border:1px solid var(--border2);border-radius:var(--rsm);padding:0 11px;cursor:pointer;color:var(--ink3);font-size:0.76rem;font-family:'DM Sans',sans-serif}
+.keyhint{font-size:0.71rem;color:var(--ink3);margin-bottom:1.2rem;line-height:1.6}
+.keyhint a{color:var(--gold);text-decoration:none}
+.keysave{width:100%;padding:10px;background:var(--ink);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;transition:opacity 0.2s}
+.keysave:hover:not([disabled]){opacity:0.85}
+.keysave[disabled]{opacity:0.38;cursor:not-allowed}
+.keyerr{font-size:0.74rem;color:#A32D2D;margin-top:7px;display:none}
+.keyerr.show{display:block}
+.keyexist{display:none;align-items:center;gap:7px;margin-bottom:1rem;padding:6px 9px;background:var(--green-bg);border-radius:var(--rsm)}
+.keyexist.show{display:flex}
+.keyexist-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.keyexist-txt{font-size:0.74rem;color:var(--green);flex:1}
+.keyremove{background:none;border:none;font-size:0.71rem;color:#A32D2D;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 15px;border-radius:20px;font-size:0.76rem;font-weight:500;display:none;align-items:center;gap:7px;z-index:800;white-space:nowrap;pointer-events:none}
 .toast.show{display:flex}
-.spin{animation:spin 0.9s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── EMPTY STATE ── */
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--ink3)}
-.empty p{font-size:0.85rem;margin-top:0.4rem}
-
-/* ── SEARCH MODAL ── */
-.search-modal{display:none;position:fixed;inset:0;background:rgba(24,23,26,0.5);z-index:200;align-items:flex-start;justify-content:center;padding:4rem 1rem 1rem;pointer-events:none}
-.search-modal.open{display:flex;pointer-events:all}
-.search-box{background:var(--cream);border-radius:var(--radius);width:100%;max-width:500px;overflow:hidden;box-shadow:0 8px 40px rgba(24,23,26,0.15)}
-.search-input-wrap{display:flex;align-items:center;gap:10px;padding:0.9rem 1.1rem;border-bottom:1px solid var(--border)}
-.search-input-wrap input{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);outline:none}
-.search-input-wrap input::placeholder{color:var(--ink3)}
-.search-results{max-height:360px;overflow-y:auto}
-.search-item{padding:0.75rem 1.1rem;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.12s}
-.search-item:hover{background:var(--sand)}
-.search-item:last-child{border-bottom:none}
-.search-item-title{font-size:0.85rem;font-weight:500;color:var(--ink);margin-bottom:2px}
-.search-item-cat{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--ink3)}
-.search-empty{padding:1.5rem;text-align:center;color:var(--ink3);font-size:0.82rem}
+.spin{display:inline-block;animation:spin 0.9s linear infinite}
 
 @media(max-width:480px){
-  .topic-grid{grid-template-columns:1fr}
-  .stats-bar{grid-template-columns:repeat(3,1fr)}
-  .stat-num{font-size:1.25rem}
+  .grid{grid-template-columns:1fr}
+  .stat-n{font-size:1.2rem}
 }
-
-/* ── API KEY MODAL ── */
-.apikey-overlay{display:none;position:fixed;inset:0;background:rgba(24,23,26,0.7);z-index:400;align-items:center;justify-content:center;padding:1.25rem;pointer-events:none}
-.apikey-overlay.open{display:flex;pointer-events:all}
-.apikey-box{background:var(--cream);border-radius:16px;width:100%;max-width:460px;padding:2rem 1.75rem;animation:slideUp 0.25s ease}
-.apikey-logo{font-family:'Playfair Display',serif;font-size:1.5rem;display:flex;align-items:center;gap:8px;margin-bottom:0.35rem}
-.apikey-sub{font-size:0.82rem;color:var(--ink3);margin-bottom:1.5rem;line-height:1.5}
-.apikey-label{font-size:0.75rem;font-weight:600;color:var(--ink2);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:0.06em}
-.apikey-input-wrap{display:flex;gap:8px;margin-bottom:0.6rem}
-.apikey-input{flex:1;padding:9px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--ink);background:var(--cream);outline:none;transition:border-color 0.15s;font-variant-numeric:tabular-nums;letter-spacing:0.02em}
-.apikey-input:focus{border-color:var(--gold)}
-.apikey-toggle{background:none;border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0 10px;cursor:pointer;color:var(--ink3);font-size:0.8rem;transition:all 0.15s;white-space:nowrap}
-.apikey-toggle:hover{border-color:var(--ink2);color:var(--ink)}
-.apikey-hint{font-size:0.72rem;color:var(--ink3);margin-bottom:1.25rem;line-height:1.55}
-.apikey-hint a{color:var(--gold);text-decoration:none}
-.apikey-hint a:hover{text-decoration:underline}
-.apikey-save{width:100%;padding:10px;background:var(--ink);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:opacity 0.2s}
-.apikey-save:hover{opacity:0.85}
-.apikey-save:disabled{opacity:0.45;cursor:not-allowed}
-.apikey-err{font-size:0.75rem;color:#A32D2D;margin-top:8px;display:none}
-.apikey-err.show{display:block}
-.key-status{display:flex;align-items:center;gap:6px;font-size:0.72rem;padding:4px 0}
-.key-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.key-dot.ok{background:var(--green)}
-.key-dot.none{background:var(--ink3)}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
-  <a class="logo" href="#"><span class="logo-dot"></span>Curio</a>
-  <div class="nav-right">
-    <div class="streak" id="streak-el">🔥 <span id="streak-num">0</span>d</div>
-    <button class="nav-btn" onclick="openSearch()">🔍 Search</button>
-    <button class="nav-btn" onclick="openApiKey(false)" id="key-nav-btn" title="API Key settings">⚙️</button>
+  <span class="logo"><span class="logo-dot"></span>Curio</span>
+  <div class="nav-r">
+    <div class="streak-pill">🔥 <span id="N_streak">0</span>d</div>
+    <button class="nbtn" onclick="UI.openSearch()">🔍</button>
+    <button class="nbtn" id="N_keybtn" onclick="UI.openKeyModal()">⚙️</button>
+    <span class="ver">v4</span>
   </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <p class="hero-eyebrow" id="hero-date">Today's pick</p>
-  <h1 id="hero-title">Loading today's pick&hellip;</h1>
-  <div class="today-card" id="today-card" onclick="openPanel(getTodayTopic())">
-    <div class="today-accent"></div>
-    <div class="today-body">
-      <div class="today-meta">
-        <span class="today-pill" id="tc-cat">—</span>
-        <span class="today-time" id="tc-time">— min read</span>
+  <p class="hero-eye" id="N_date">Today's pick</p>
+  <h1 id="N_heroTitle">Loading…</h1>
+  <div class="t-card" id="N_todayCard">
+    <div class="t-card-accent"></div>
+    <div class="t-card-body">
+      <div class="t-card-meta">
+        <span class="t-pill" id="N_todayCat">—</span>
+        <span class="t-time-lbl" id="N_todayTime">—</span>
       </div>
-      <div class="today-title" id="tc-title">—</div>
-      <div class="today-desc" id="tc-desc">—</div>
+      <div class="t-card-title" id="N_todayTitle">—</div>
+      <div class="t-card-desc" id="N_todayDesc">—</div>
     </div>
-    <div class="today-arrow">›</div>
+    <div class="t-card-arrow">›</div>
   </div>
 </div>
 
+<!-- MAIN -->
 <div class="main">
-  <div class="stats-bar">
-    <div class="stat-card">
-      <span class="stat-num" id="s-read">0</span>
-      <span class="stat-label">Read</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-num" id="s-total">0</span>
-      <span class="stat-label">Topics</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-num" id="s-cats">0</span>
-      <span class="stat-label">Categories</span>
-    </div>
+  <div class="stats-row">
+    <div class="stat-box"><span class="stat-n" id="N_sRead">0</span><span class="stat-l">Read</span></div>
+    <div class="stat-box"><span class="stat-n" id="N_sTotal">0</span><span class="stat-l">Topics</span></div>
+    <div class="stat-box"><span class="stat-n" id="N_sCats">0</span><span class="stat-l">Categories</span></div>
   </div>
-
-  <div class="progress-wrap">
-    <div class="progress-top">
-      <span>Overall progress</span>
-      <span id="pct-label">0%</span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="prog-wrap">
+    <div class="prog-top"><span>Progress</span><span id="N_pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="N_progFill" style="width:0%"></div></div>
   </div>
-
-  <div class="filter-scroll" id="filter-row"></div>
-  <div class="topic-grid" id="topic-grid"></div>
+  <div class="filter-row" id="N_filters"></div>
+  <div class="grid" id="N_grid"></div>
 </div>
 
-<!-- Reading Panel -->
-<div class="overlay" id="overlay" onclick="overlayClick(event)">
-  <div class="panel" id="panel" onclick="event.stopPropagation()">
-    <div class="panel-top">
-      <div>
-        <div class="p-cat" id="p-cat-label">—</div>
-        <div class="p-title" id="p-title">—</div>
+<!-- READING PANEL -->
+<div class="overlay" id="N_overlay">
+  <div class="panel" id="N_panel">
+    <div class="ptop">
+      <div><div class="pcat" id="N_pCat">—</div><div class="ptitle" id="N_pTitle">—</div></div>
+      <button class="pclose" id="N_pClose">✕</button>
+    </div>
+    <div class="pbody">
+      <div class="pmeta">
+        <span>🕐 <span id="N_pTime">—</span></span>
+        <span>📊 <span id="N_pDiff">—</span></span>
       </div>
-      <button class="panel-close" onclick="closePanel()">✕</button>
+      <div class="pcontent" id="N_pContent"></div>
     </div>
-    <div class="panel-body">
-      <div class="p-meta">
-        <span>🕐 <span id="p-time">—</span></span>
-        <span>📊 <span id="p-diff">—</span></span>
-      </div>
-      <div class="p-content" id="p-content">
-        <div class="p-loading">
-          <div class="skel skel-title"></div>
-          <div class="skel skel-line"></div>
-          <div class="skel skel-line w60"></div>
-          <div class="skel skel-line"></div>
-          <div class="skel skel-line w40"></div>
-        </div>
-      </div>
-      <button class="mark-btn" id="mark-btn" onclick="markRead()">✓ Mark as read</button>
+    <div class="pactions">
+      <button class="mark-btn" id="N_markBtn">✓ Mark as read</button>
     </div>
   </div>
 </div>
 
-<!-- Search Modal -->
-<div class="search-modal" id="search-modal" onclick="searchOverlayClick(event)">
-  <div class="search-box">
-    <div class="search-input-wrap">
-      <span>🔍</span>
-      <input type="text" id="search-input" placeholder="Search topics…" oninput="doSearch()" />
-      <button onclick="closeSearch()" style="background:none;border:none;cursor:pointer;color:var(--ink3);font-size:1rem">✕</button>
+<!-- SEARCH PANEL -->
+<div class="overlay" id="N_searchOverlay">
+  <div class="panel" style="max-width:500px">
+    <div class="ptop">
+      <div class="ptitle" style="font-size:1rem">Search topics</div>
+      <button class="pclose" id="N_searchClose">✕</button>
     </div>
-    <div class="search-results" id="search-results"></div>
+    <div class="pbody" style="padding-top:0.7rem">
+      <input id="N_searchInput" type="text" placeholder="Type to search…"
+        style="width:100%;padding:8px 11px;border:1px solid var(--border2);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:0.87rem;outline:none;margin-bottom:0.7rem;color:var(--ink)">
+      <div id="N_searchResults" style="max-height:320px;overflow-y:auto"></div>
+    </div>
   </div>
 </div>
 
-<!-- API Key Modal -->
-<div class="apikey-overlay" id="apikey-overlay">
-  <div class="apikey-box">
-    <div class="apikey-logo"><span class="logo-dot"></span>Curio</div>
-    <p class="apikey-sub">To generate new topics and articles automatically, Curio uses Groq — which is <strong>completely free</strong>, no credit card needed. Enter your free Groq API key below. It's saved only on your device.</p>
-    <label class="apikey-label" for="apikey-field">Groq API Key (Free)</label>
-    <div class="apikey-input-wrap">
-      <input class="apikey-input" id="apikey-field" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false" oninput="onKeyInput()" />
-      <button class="apikey-toggle" onclick="toggleKeyVis()" id="key-vis-btn">Show</button>
+<!-- API KEY MODAL -->
+<div class="keyoverlay" id="N_keyOverlay">
+  <div class="keybox">
+    <div class="keylogo"><span class="logo-dot"></span>Curio</div>
+    <p class="keysub">Curio uses Groq (free — no credit card needed) to write articles and generate new topics as you read. Your key is stored only on this device.</p>
+    <div class="keyexist" id="N_keyExist">
+      <span class="keyexist-dot"></span>
+      <span class="keyexist-txt">Key saved — ending in <span id="N_keyPreview">…</span></span>
+      <button class="keyremove" onclick="API.removeKey()">Remove</button>
     </div>
-    <p class="apikey-hint">
-      Get your <strong>free</strong> key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>.<br>
-      100% free, no credit card needed. Stored only in your browser.
-    </p>
-    <div class="key-status" id="key-status-row" style="display:none;margin-bottom:1rem">
-      <span class="key-dot ok"></span>
-      <span style="color:var(--ink2);font-size:0.72rem">API key saved — ending in <span id="key-preview">…</span></span>
-      <button onclick="clearKey()" style="margin-left:auto;background:none;border:none;font-size:0.72rem;color:#A32D2D;cursor:pointer;font-family:'DM Sans',sans-serif">Remove</button>
+    <label class="keylbl">Groq API Key (Free)</label>
+    <div class="keyrow">
+      <input class="keyinp" id="N_keyInput" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false">
+      <button class="keytog" id="N_keyTog" onclick="UI.toggleKeyVis()">Show</button>
     </div>
-    <button class="apikey-save" id="apikey-save-btn" onclick="saveApiKey()" disabled>Save &amp; start reading</button>
-    <p class="apikey-err" id="apikey-err">Please enter a valid Groq API key from console.groq.com.</p>
+    <p class="keyhint">Get your free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — sign in with Google, click Create API Key, paste it here.</p>
+    <button class="keysave" id="N_keySave" onclick="API.saveKey()" disabled>Save &amp; start reading</button>
+    <p class="keyerr" id="N_keyErr">Please enter your Groq API key (at least 20 characters).</p>
   </div>
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast">
-  <span class="spin">⟳</span>
-  <span id="toast-msg">Generating new topics…</span>
-</div>
+<!-- TOAST -->
+<div class="toast" id="N_toast"><span class="spin">⟳</span><span id="N_toastMsg">Generating…</span></div>
 
 <script>
-const API_KEY_STORAGE = 'curio_apikey';
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CONSTANTS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const LS_STATE = 'curio_v4_state';
+const LS_KEY   = 'curio_v4_key';
 
-function getApiKey(){ return localStorage.getItem(API_KEY_STORAGE)||''; }
-
-
-function openApiKey(isFirstTime){
-  const overlay = document.getElementById('apikey-overlay');
-  const field = document.getElementById('apikey-field');
-  const saveBtn = document.getElementById('apikey-save-btn');
-  const errEl = document.getElementById('apikey-err');
-  const statusRow = document.getElementById('key-status-row');
-  const existing = getApiKey();
-  field.value = '';
-  errEl.classList.remove('show');
-  if(existing){
-    statusRow.style.display='flex';
-    document.getElementById('key-preview').textContent = existing.slice(-4);
-    saveBtn.textContent = 'Update key';
-    saveBtn.disabled = true;
-    if(isFirstTime){ overlay.classList.remove('open'); return; } // key exists, skip modal on load
-  } else {
-    statusRow.style.display='none';
-    saveBtn.textContent = 'Save & start reading';
-    saveBtn.disabled = true;
-    // always show modal on first load if no key
-  }
-  overlay.classList.add('open');
-}
-
-function onKeyInput(){
-  const val = document.getElementById('apikey-field').value.trim();
-  const saveBtn = document.getElementById('apikey-save-btn');
-  const errEl = document.getElementById('apikey-err');
-  saveBtn.disabled = val.length < 10;
-  errEl.classList.remove('show');
-}
-
-function toggleKeyVis(){
-  const f = document.getElementById('apikey-field');
-  const btn = document.getElementById('key-vis-btn');
-  if(f.type==='password'){ f.type='text'; btn.textContent='Hide'; }
-  else { f.type='password'; btn.textContent='Show'; }
-}
-
-function saveApiKey(){
-  const val = document.getElementById('apikey-field').value.trim();
-  if(val.length < 20){
-    document.getElementById('apikey-err').classList.add('show');
-    return;
-  }
-  localStorage.setItem(API_KEY_STORAGE, val);
-  document.getElementById('apikey-overlay').classList.remove('open');
-  updateKeyNavBtn();
-  initHero(); initFilters(); renderGrid(); updateStats();
-}
-
-function clearKey(){
-  localStorage.removeItem(API_KEY_STORAGE);
-  document.getElementById('key-status-row').style.display='none';
-  document.getElementById('apikey-field').value='';
-  document.getElementById('apikey-save-btn').textContent='Save & start reading';
-  document.getElementById('apikey-save-btn').disabled=true;
-  updateKeyNavBtn();
-}
-
-function updateKeyNavBtn(){
-  const btn = document.getElementById('key-nav-btn');
-  if(getApiKey()){ btn.style.color='var(--green)'; btn.title='API key active — click to change'; }
-  else { btn.style.color=''; btn.title='Set API key'; }
-}
-
-async function groqGenerate(prompt, maxTokens=2500){
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':`Bearer ${getApiKey()}`
-    },
-    body:JSON.stringify({
-      model:'llama-3.3-70b-versatile',
-      messages:[{role:'user', content:prompt}],
-      max_tokens: maxTokens,
-      temperature:0.8
-    })
-  });
-  const data = await res.json();
-  if(data.error) throw new Error(data.error.message);
-  return data.choices?.[0]?.message?.content || '';
-}
-const CAT_WEIGHTS = {
-  business:25, science:15, psychology:12, selfhelp:10, sports:8,
-  health:8, wealth:8, history:7, currentaffairs:5, philosophy:1, technology:1
-};
 const CAT_LABELS = {
-  business:'Business', science:'Science', psychology:'Psychology',
-  selfhelp:'Self-Help', sports:'Sports', health:'Health',
-  wealth:'Wealth', history:'History', currentaffairs:'Current Affairs',
-  philosophy:'Philosophy', technology:'Technology'
+  business:'Business',science:'Science',psychology:'Psychology',
+  selfhelp:'Self-Help',sports:'Sports',health:'Health',
+  wealth:'Wealth',history:'History',currentaffairs:'Current Affairs',
+  philosophy:'Philosophy',technology:'Technology'
 };
 const CAT_COLORS = {
-  business:'#1D6FA8', science:'#4B3D8F', psychology:'#1A6B7A',
-  selfhelp:'#B8862A', sports:'#1A6B45', health:'#D85A30',
-  wealth:'#3B6D11', history:'#7B4B2A', currentaffairs:'#E24B4A',
-  philosophy:'#534AB7', technology:'#1D9E75'
+  business:'#1D6FA8',science:'#4B3D8F',psychology:'#1A6B7A',
+  selfhelp:'#B8862A',sports:'#1A6B45',health:'#D85A30',
+  wealth:'#3B6D11',history:'#7B4B2A',currentaffairs:'#E24B4A',
+  philosophy:'#534AB7',technology:'#1D9E75'
 };
-const READ_THRESHOLDS = [1,2,3,5,7,10,14,18,23,28];
-
-const SEED_TOPICS = [
+const CAT_WEIGHTS = {
+  business:22,science:14,psychology:12,selfhelp:10,sports:9,
+  health:9,wealth:9,history:8,currentaffairs:5,philosophy:1,technology:1
+};
+const SEEDS = [
   {id:'s1',cat:'business',title:'How Jeff Bezos built Amazon from a garage',desc:'The early decisions, relentless customer focus, and long-term thinking that turned a bookstore into a trillion-dollar empire.',time:'6',diff:'Beginner'},
   {id:'s2',cat:'science',title:'Why do we dream?',desc:'Neuroscience still debates this — but the leading theories reveal fascinating truths about memory, emotion, and the sleeping brain.',time:'5',diff:'Beginner'},
   {id:'s3',cat:'psychology',title:'The power of the growth mindset',desc:"Carol Dweck's landmark research on why believing intelligence is fixed holds people back — and how one shift unlocks potential.",time:'5',diff:'Beginner'},
-  {id:'s4',cat:'selfhelp',title:'The 80/20 rule: doing less to achieve more',desc:'The Pareto Principle explained — why 20% of your actions produce 80% of your results, and how to ruthlessly find that 20%.',time:'5',diff:'Beginner'},
+  {id:'s4',cat:'selfhelp',title:'The 80/20 rule: doing less to achieve more',desc:'The Pareto Principle — why 20% of your actions produce 80% of your results, and how to ruthlessly find that 20%.',time:'5',diff:'Beginner'},
   {id:'s5',cat:'sports',title:'The science of peak athletic performance',desc:'What separates elite athletes from the rest — the physiology, psychology, and deliberate practice that creates champions.',time:'6',diff:'Intermediate'},
-  {id:'s6',cat:'health',title:'Why sleep is the ultimate performance drug',desc:'Matthew Walker\'s research shows sleep affects every system in your body — yet most people treat it as optional.',time:'6',diff:'Beginner'},
-  {id:'s7',cat:'wealth',title:'Compound interest: the 8th wonder of the world',desc:"Einstein allegedly called it mankind's greatest invention. Here's why starting to invest early is the single most powerful financial decision.",time:'5',diff:'Beginner'},
+  {id:'s6',cat:'health',title:'Why sleep is the ultimate performance drug',desc:"Matthew Walker's research shows sleep affects every system in your body — yet most people treat it as optional.",time:'6',diff:'Beginner'},
+  {id:'s7',cat:'wealth',title:'Compound interest: the 8th wonder of the world',desc:"Why starting to invest early is the single most powerful financial decision you will ever make — explained simply.",time:'5',diff:'Beginner'},
   {id:'s8',cat:'history',title:'The rise and fall of the Roman Empire',desc:'How a small city-state conquered the known world — and what internal decay, not barbarian invasion, really brought it down.',time:'7',diff:'Beginner'},
-  {id:'s9',cat:'currentaffairs',title:'The AI race: what the competition between nations means for you',desc:"The US, China, and Europe are in a fierce competition to lead artificial intelligence. Here's what's at stake for everyday life.",time:'6',diff:'Intermediate'},
-  {id:'s10',cat:'business',title:"What Warren Buffett's investment philosophy actually is",desc:'Value investing demystified — the principles behind the most successful long-term investor of all time, explained simply.',time:'5',diff:'Beginner'},
-  {id:'s11',cat:'psychology',title:'Why habits are so hard to break (and how to change them)',desc:"The neuroscience of habit loops — cue, routine, reward — and the evidence-based strategies that actually rewire your brain.",time:'5',diff:'Beginner'},
-  {id:'s12',cat:'health',title:'The surprising truth about what we eat',desc:"Nutrition science is full of myths. Here's what the latest research actually says about diet, processed food, and why advice keeps changing.",time:'6',diff:'Intermediate'},
+  {id:'s9',cat:'currentaffairs',title:'The AI race: what the competition between nations means for you',desc:"The US, China, and Europe are in a fierce competition to lead AI. Here's what's at stake for everyday life.",time:'6',diff:'Intermediate'},
+  {id:'s10',cat:'business',title:"Warren Buffett's investment philosophy explained simply",desc:'Value investing demystified — the core principles behind the most successful long-term investor of all time.',time:'5',diff:'Beginner'},
+  {id:'s11',cat:'psychology',title:'Why habits are so hard to break',desc:"The neuroscience of habit loops — cue, routine, reward — and the evidence-based strategies that actually rewire your brain.",time:'5',diff:'Beginner'},
+  {id:'s12',cat:'health',title:'The surprising truth about nutrition science',desc:"Nutrition advice keeps changing — here's what the latest research actually says about diet, processed food, and health.",time:'6',diff:'Intermediate'},
 ];
 
-let state = {topics:[],readIds:new Set(),savedIds:new Set(),streak:0,lastReadDate:null,generatingIds:new Set()};
-let activeFilter = 'all';
-let currentTopic = null;
-let panelArticleCache = {};
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATE — plain arrays only, never Sets
+// Loaded from / saved to localStorage on every change
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const State = (() => {
+  let s = { topics:[], readIds:[], savedIds:[], streak:0, lastReadDate:null, newIds:[] };
 
-function saveState(){
-  const s = {...state, readIds:[...state.readIds], savedIds:[...state.savedIds], generatingIds:[]};
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-}
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      const s = JSON.parse(raw);
-      state.topics = s.topics || [];
-      state.readIds = new Set(s.readIds || []);
-      state.savedIds = new Set(s.savedIds || []);
-      state.streak = s.streak || 0;
-      state.lastReadDate = s.lastReadDate || null;
-      state.generatingIds = new Set();
-      if(state.topics.length === 0) state.topics = [...SEED_TOPICS];
-    } else {
-      state.topics = [...SEED_TOPICS];
-    }
-  } catch(e){ state.topics = [...SEED_TOPICS]; }
-}
-
-function weightedCat(){
-  const read = [...state.readIds];
-  const readCats = read.map(id => { const t = state.topics.find(x=>x.id===id); return t?t.cat:null; }).filter(Boolean);
-  const catCount = {};
-  Object.keys(CAT_WEIGHTS).forEach(c=>catCount[c]=0);
-  readCats.forEach(c=>{ if(catCount[c]!==undefined) catCount[c]++; });
-  const adjusted = {};
-  Object.entries(CAT_WEIGHTS).forEach(([c,w])=>{ adjusted[c] = Math.max(1, w - catCount[c]*0.5); });
-  const total = Object.values(adjusted).reduce((a,b)=>a+b,0);
-  let r = Math.random()*total;
-  for(const [c,w] of Object.entries(adjusted)){ r-=w; if(r<=0) return c; }
-  return 'business';
-}
-
-function getTodayTopic(){
-  const dayIdx = Math.floor(Date.now()/(1000*60*60*24)) % state.topics.length;
-  return state.topics[dayIdx] || state.topics[0];
-}
-
-function initHero(){
-  const t = getTodayTopic();
-  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const d = new Date();
-  document.getElementById('hero-date').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} — Today's pick`;
-  document.getElementById('hero-title').innerHTML = `Today, read about<br><em>${t.title}</em>`;
-  document.getElementById('tc-cat').textContent = CAT_LABELS[t.cat]||t.cat;
-  document.getElementById('tc-time').textContent = `${t.time} min read`;
-  document.getElementById('tc-title').textContent = t.title;
-  document.getElementById('tc-desc').textContent = t.desc;
-}
-
-function initFilters(){
-  const cats = ['all',...Object.keys(CAT_LABELS)];
-  const el = document.getElementById('filter-row');
-  el.innerHTML = cats.map(c=>`<button class="cat-btn ${activeFilter===c?'active':''}" onclick="setFilter('${c}')">${c==='all'?'All topics':CAT_LABELS[c]||c}</button>`).join('');
-}
-
-function setFilter(cat){ activeFilter=cat; initFilters(); renderGrid(); }
-
-function renderGrid(){
-  const filtered = activeFilter==='all' ? state.topics : state.topics.filter(t=>t.cat===activeFilter);
-  const el = document.getElementById('topic-grid');
-  if(!filtered.length){
-    el.innerHTML = `<div class="empty" style="grid-column:1/-1"><div style="font-size:2rem">📭</div><p>No topics in this category yet.<br>Read more to unlock them!</p></div>`;
-    return;
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_STATE);
+      if (raw) {
+        const p = JSON.parse(raw);
+        s.topics       = Array.isArray(p.topics)       ? p.topics       : [...SEEDS];
+        s.readIds      = Array.isArray(p.readIds)       ? p.readIds      : [];
+        s.savedIds     = Array.isArray(p.savedIds)      ? p.savedIds     : [];
+        s.streak       = Number.isFinite(p.streak)      ? p.streak       : 0;
+        s.lastReadDate = typeof p.lastReadDate==='string'? p.lastReadDate : null;
+        s.newIds       = []; // never restore new badges
+        if (s.topics.length === 0) s.topics = [...SEEDS];
+      } else {
+        s.topics = [...SEEDS];
+      }
+    } catch(e) { s.topics = [...SEEDS]; }
   }
-  el.innerHTML = filtered.map(t => {
-    const isRead = state.readIds.has(t.id);
-    const isSaved = state.savedIds.has(t.id);
-    const isNew = t.isNew;
-    return `<div class="topic-card cat-${t.cat} ${isRead?'read-card':''} ${isNew?'new-topic':''}" onclick="openPanel(state.topics.find(x=>x.id==='${t.id}'))">
-      ${isRead?`<div class="read-dot" title="Read"></div>`:''}
-      ${isNew&&!isRead?`<div class="new-badge">New</div>`:''}
-      <div class="topic-head">
-        <div class="topic-title">${t.title}</div>
-        <button class="bm-btn ${isSaved?'bm-on':''}" onclick="toggleSave(event,'${t.id}')" title="${isSaved?'Unsave':'Save'}">
-          ${isSaved?'🔖':'🏷️'}
-        </button>
-      </div>
-      <div class="topic-desc">${t.desc}</div>
-      <div class="topic-foot">
-        <span class="t-tag">${CAT_LABELS[t.cat]||t.cat}</span>
-        <span class="t-time">🕐 ${t.time} min</span>
-      </div>
-    </div>`;
-  }).join('');
-}
 
-function updateStats(){
-  const r = state.readIds.size;
-  const tot = state.topics.length;
-  const cats = new Set(state.topics.filter(t=>state.readIds.has(t.id)).map(t=>t.cat)).size;
-  document.getElementById('s-read').textContent = r;
-  document.getElementById('s-total').textContent = tot;
-  document.getElementById('s-cats').textContent = cats;
-  const pct = tot ? Math.round((r/tot)*100) : 0;
-  document.getElementById('pct-label').textContent = pct+'%';
-  document.getElementById('prog-fill').style.width = pct+'%';
-  document.getElementById('streak-num').textContent = state.streak;
-}
-
-async function openPanel(topic){
-  if(!topic) return;
-  currentTopic = topic;
-  document.getElementById('p-cat-label').textContent = CAT_LABELS[topic.cat]||topic.cat;
-  document.getElementById('p-cat-label').style.color = CAT_COLORS[topic.cat]||'#888';
-  document.getElementById('p-title').textContent = topic.title;
-  document.getElementById('p-time').textContent = topic.time+' min read';
-  document.getElementById('p-diff').textContent = topic.diff||'Intermediate';
-  const btn = document.getElementById('mark-btn');
-  if(state.readIds.has(topic.id)){ btn.innerHTML='✓ Already read'; btn.classList.add('done'); }
-  else { btn.innerHTML='✓ Mark as read'; btn.classList.remove('done'); }
-  document.getElementById('overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-
-  const contentEl = document.getElementById('p-content');
-  if(panelArticleCache[topic.id]){ contentEl.innerHTML = panelArticleCache[topic.id]; return; }
-  contentEl.innerHTML = `<div class="p-loading"><div class="skel skel-title"></div><div class="skel skel-line"></div><div class="skel skel-line w60"></div><div class="skel skel-line"></div><div class="skel skel-line w40"></div><div class="skel skel-line"></div><div class="skel skel-line w60"></div></div>`;
-  try{
-    if(!getApiKey()){
-      contentEl.innerHTML = `<div style="text-align:center;padding:1.5rem 0">
-        <div style="font-size:2rem;margin-bottom:0.75rem">🔑</div>
-        <p style="font-weight:600;color:var(--ink);margin-bottom:0.4rem">API key needed</p>
-        <p style="font-size:0.8rem;color:var(--ink3);margin-bottom:1rem">Add your free Groq API key to load articles and unlock new topics.</p>
-        <button onclick="closePanel();openApiKey(false)" style="padding:8px 18px;background:var(--ink);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer">Set API Key (Free)</button>
-      </div>`;
-      return;
-    }
-    const html = await generateArticle(topic);
-    panelArticleCache[topic.id] = html;
-    if(currentTopic && currentTopic.id===topic.id) contentEl.innerHTML = html;
-  } catch(e){
-    const msg = e.message||'';
-    let hint = 'Check your internet connection and try again.';
-    if(msg.includes('API_KEY_INVALID') || msg.includes('invalid')) hint = 'Your API key looks invalid. Click ⚙️ to update it.';
-    else if(msg.includes('quota') || msg.includes('RESOURCE_EXHAUSTED')) hint = 'Free quota reached for today. Try again tomorrow — it resets daily.';
-    else if(msg.includes('CORS') || msg.includes('Failed to fetch')) hint = 'Network error. Make sure you\'re connected to the internet.';
-    contentEl.innerHTML = `<div style="text-align:center;padding:1.5rem 0">
-      <div style="font-size:1.8rem;margin-bottom:0.6rem">⚠️</div>
-      <p style="font-weight:600;color:var(--ink);margin-bottom:0.3rem">Couldn't load article</p>
-      <p style="font-size:0.78rem;color:var(--ink3)">${hint}</p>
-    </div>`;
+  function save() {
+    // newIds intentionally not persisted
+    const toSave = { topics:s.topics, readIds:s.readIds, savedIds:s.savedIds, streak:s.streak, lastReadDate:s.lastReadDate };
+    try { localStorage.setItem(LS_STATE, JSON.stringify(toSave)); } catch(e) {}
   }
-}
 
-async function generateArticle(topic){
-  const prompt = `Write a long, deeply informative and engaging article about "${topic.title}" for the category "${CAT_LABELS[topic.cat]}".
+  function isRead(id)  { return s.readIds.indexOf(id) > -1; }
+  function isSaved(id) { return s.savedIds.indexOf(id) > -1; }
+  function isNew(id)   { return s.newIds.indexOf(id) > -1; }
 
-Format as clean HTML using only these tags: <p>, <h3>, <div class="callout">.
-Use the callout div 2–3 times for fascinating facts, statistics, or memorable quotes.
-Write 8–10 substantial paragraphs with 4–5 section headings (h3 tags).
-Each paragraph must be at least 4–5 sentences long.
-Include: real statistics and data, historical context, expert opinions or research findings, real-world examples, practical takeaways, and surprising counterintuitive facts.
-Make it feel like a well-researched magazine article — thorough, nuanced, and intellectually rewarding.
-Start directly with a <p> tag — no intro sentence, no title repeat.
-Output only the HTML content, nothing else.`;
+  function markRead(id) {
+    if (isRead(id)) return false;
+    s.readIds.push(id);
+    // Update streak
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if (s.lastReadDate !== today) {
+      s.streak = (s.lastReadDate === yesterday) ? s.streak + 1 : 1;
+      s.lastReadDate = today;
+    }
+    save();
+    return true;
+  }
 
-  const text = await groqGenerate(prompt, 2500);
-  return text.replace(/```html|```/g,'').trim();
-}
+  function toggleSave(id) {
+    const i = s.savedIds.indexOf(id);
+    if (i > -1) s.savedIds.splice(i,1); else s.savedIds.push(id);
+    save();
+  }
 
-async function generateNewTopics(justReadTopic){
-  if(!getApiKey()) return;
-  const existingTitles = state.topics.map(t=>t.title).join(', ');
-  const cat1 = weightedCat();
-  let cat2 = weightedCat();
-  if(cat2===cat1) cat2 = weightedCat();
-
-  showToast('Unlocking new topics for you…');
-  try{
-    const prompt = `You are a general knowledge curator. Generate exactly 3 new topic ideas.
-
-The reader just finished: "${justReadTopic.title}" (${CAT_LABELS[justReadTopic.cat]})
-
-Rules:
-- Topic 1: closely related to what they just read
-- Topic 2: category must be ${CAT_LABELS[cat1]}
-- Topic 3: category must be ${CAT_LABELS[cat2]}
-- Do NOT repeat any of these: ${existingTitles.slice(0,400)}
-
-You MUST respond with ONLY a raw JSON array. No markdown. No explanation. No backticks. Just the array:
-[{"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"},{"title":"...","cat":"...","desc":"...","time":"5","diff":"Beginner"},{"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"}]
-
-cat must be exactly one of: business, science, psychology, selfhelp, sports, health, wealth, history, currentaffairs, philosophy, technology
-desc must be 1–2 sentences, specific and compelling.`;
-
-    const raw = await groqGenerate(prompt, 600);
-
-    // Extract JSON array robustly
-    const match = raw.match(/\[[\s\S]*\]/);
-    if(!match) throw new Error('No JSON array found in response');
-    const newTopics = JSON.parse(match[0]);
-
-    newTopics.forEach(t=>{
-      if(t.title && t.cat && t.desc){
-        state.topics.push({
-          id: 'ai_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
-          cat: t.cat, title: t.title, desc: t.desc,
-          time: t.time||'6', diff: t.diff||'Intermediate', isNew: true
-        });
+  function addTopics(newTopics) {
+    const ids = [];
+    newTopics.forEach(t => {
+      if (t && t.id && t.title && t.cat && t.desc && CAT_LABELS[t.cat]) {
+        s.topics.push(t);
+        ids.push(t.id);
       }
     });
-    saveState();
-    renderGrid();
-    updateStats();
-    setTimeout(()=>{ state.topics.forEach(t=>{ if(t.isNew) t.isNew=false; }); saveState(); }, 4000);
-  } catch(e){ console.warn('Topic gen failed:', e.message); }
-  hideToast();
+    s.newIds = ids;
+    save();
+    return ids;
+  }
+
+  return { load, save, isRead, isSaved, isNew, markRead, toggleSave, addTopics, get:()=>s };
+})();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// API KEY
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const API = (() => {
+  function getKey() { return localStorage.getItem(LS_KEY) || ''; }
+
+  function saveKey() {
+    const val = document.getElementById('N_keyInput').value.trim();
+    if (val.length < 20) { document.getElementById('N_keyErr').classList.add('show'); return; }
+    localStorage.setItem(LS_KEY, val);
+    document.getElementById('N_keyOverlay').classList.remove('open');
+    document.getElementById('N_keybtn').style.color = 'var(--green)';
+  }
+
+  function removeKey() {
+    localStorage.removeItem(LS_KEY);
+    document.getElementById('N_keyExist').classList.remove('show');
+    document.getElementById('N_keybtn').style.color = '';
+  }
+
+  async function groq(prompt, maxTok) {
+    const key = getKey();
+    if (!key) throw new Error('NO_KEY');
+    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        messages:[{role:'user',content:prompt}],
+        max_tokens:maxTok,
+        temperature:0.8
+      })
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || 'Groq error');
+    return (d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content) || '';
+  }
+
+  async function fetchArticle(topic) {
+    const prompt =
+      'Write a deeply informative, engaging, long-form article about "'+topic.title+'" (category: '+(CAT_LABELS[topic.cat]||topic.cat)+').\n\n'+
+      'FORMAT: output clean HTML using ONLY these tags: <p>, <h3>, <div class="callout">.\n'+
+      '- Use <div class="callout"> 2-3 times for striking statistics, memorable quotes, or key facts.\n'+
+      '- Write 8-10 substantial paragraphs with 4-5 section headings using <h3>.\n'+
+      '- Each paragraph: at least 4-5 sentences. Include real data, research findings, historical context, expert insight, real-world examples, and practical takeaways.\n'+
+      '- Tone: well-researched magazine article — authoritative, engaging, intellectually rewarding.\n'+
+      'Start immediately with a <p> tag. No title. No preamble. No markdown. Output ONLY the HTML.';
+    const txt = await groq(prompt, 2800);
+    return txt.replace(/```html|```/g,'').trim();
+  }
+
+  function pickCat(exclude1, exclude2) {
+    const s = State.get();
+    const counts = {};
+    Object.keys(CAT_WEIGHTS).forEach(c => counts[c]=0);
+    s.readIds.forEach(id => {
+      const t = s.topics.find(x=>x.id===id);
+      if (t && counts[t.cat]!==undefined) counts[t.cat]++;
+    });
+    const adj = {};
+    Object.entries(CAT_WEIGHTS).forEach(([c,w]) => {
+      if (c===exclude1||c===exclude2) { adj[c]=0; return; }
+      adj[c] = Math.max(0.3, w - counts[c]*0.8);
+    });
+    const total = Object.values(adj).reduce((a,b)=>a+b,0);
+    let r = Math.random()*total;
+    for (const [c,w] of Object.entries(adj)) { r-=w; if(r<=0) return c; }
+    return 'business';
+  }
+
+  async function generateTopics(justRead) {
+    if (!getKey()) return;
+    const s = State.get();
+    const existingTitles = s.topics.map(t=>t.title).join(' | ');
+    const cat1 = pickCat(justRead.cat, '');
+    const cat2 = pickCat(justRead.cat, cat1);
+
+    UI.showToast('Unlocking new topics for you…');
+    try {
+      const prompt =
+        'Output ONLY a raw JSON array. No markdown. No explanation. No text before or after the array.\n'+
+        'Generate exactly 3 topic objects with this exact shape:\n'+
+        '[{"title":"...","cat":"...","desc":"...","time":"6","diff":"Intermediate"},{"title":"...","cat":"...","desc":"...","time":"5","diff":"Beginner"},{"title":"...","cat":"...","desc":"...","time":"7","diff":"Intermediate"}]\n\n'+
+        'Rules:\n'+
+        '- Topic 1: a natural follow-on to "'+justRead.title+'" — same or related domain\n'+
+        '- Topic 2: cat must be exactly "'+cat1+'"\n'+
+        '- Topic 3: cat must be exactly "'+cat2+'"\n'+
+        '- cat must be one of: business,science,psychology,selfhelp,sports,health,wealth,history,currentaffairs,philosophy,technology\n'+
+        '- time must be a string: "4","5","6","7", or "8"\n'+
+        '- desc: 1-2 compelling, specific sentences\n'+
+        '- Do NOT reuse any of these titles: '+existingTitles.slice(0,600)+'\n'+
+        'Output the JSON array now:';
+
+      const raw = await groq(prompt, 800);
+      const start = raw.indexOf('[');
+      const end   = raw.lastIndexOf(']');
+      if (start===-1||end===-1||end<=start) throw new Error('No JSON array found');
+      const arr = JSON.parse(raw.slice(start, end+1));
+      const stamped = arr
+        .filter(t=>t&&t.title&&t.cat&&t.desc&&CAT_LABELS[t.cat])
+        .map(t=>({
+          id: 'ai_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+          cat:t.cat, title:t.title, desc:t.desc,
+          time:t.time||'6', diff:t.diff||'Intermediate'
+        }));
+
+      if (stamped.length > 0) {
+        State.addTopics(stamped);
+        Render.grid();
+        Render.stats();
+        // Clear new badges after 6s
+        setTimeout(()=>{ State.get().newIds=[]; Render.grid(); }, 6000);
+      }
+    } catch(e) {
+      console.warn('Topic generation error:', e.message);
+    }
+    UI.hideToast();
+  }
+
+  return { getKey, saveKey, removeKey, groq, fetchArticle, generateTopics };
+})();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let activeFilter = 'all';
+
+const Render = (() => {
+  function hero() {
+    const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const d=new Date();
+    document.getElementById('N_date').textContent = DAYS[d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' — Today\'s pick';
+    const s = State.get();
+    const unread = s.topics.filter(t=>!State.isRead(t.id));
+    const pool = unread.length>0 ? unread : s.topics;
+    const idx = Math.floor(Date.now()/(1000*60*60*24)) % pool.length;
+    const t = pool[idx]||pool[0];
+    document.getElementById('N_heroTitle').innerHTML = 'Today, read about<br><em>'+esc(t.title)+'</em>';
+    document.getElementById('N_todayCat').textContent  = CAT_LABELS[t.cat]||t.cat;
+    document.getElementById('N_todayTime').textContent = t.time+' min read';
+    document.getElementById('N_todayTitle').textContent = t.title;
+    document.getElementById('N_todayDesc').textContent  = t.desc;
+    document.getElementById('N_todayCard').onclick = ()=>Panel.open(t.id);
+  }
+
+  function filters() {
+    const cats = ['all',...Object.keys(CAT_LABELS)];
+    document.getElementById('N_filters').innerHTML = cats.map(c=>
+      '<button class="fbtn'+(activeFilter===c?' active':'')
+      +'" onclick="setFilter(\''+c+'\')">'
+      +(c==='all'?'All topics':CAT_LABELS[c])+'</button>'
+    ).join('');
+  }
+
+  function grid() {
+    const s = State.get();
+    const list = activeFilter==='all' ? s.topics : s.topics.filter(t=>t.cat===activeFilter);
+    if (!list.length) {
+      document.getElementById('N_grid').innerHTML='<div class="empty-msg">No topics in this category yet — read more to unlock!</div>';
+      return;
+    }
+    document.getElementById('N_grid').innerHTML = list.map(t=>{
+      const rd=State.isRead(t.id), sv=State.isSaved(t.id), nw=State.isNew(t.id);
+      return '<div class="card cat-'+t.cat+(rd?' is-read':'')+(nw?' is-new':'')+'" onclick="Panel.open(\''+t.id+'\')">'
+        +(rd?'<div class="read-dot"></div>':'')
+        +(nw&&!rd?'<div class="new-badge">New</div>':'')
+        +'<div class="card-head">'
+          +'<div class="card-title">'+esc(t.title)+'</div>'
+          +'<button class="bmbtn'+(sv?' on':'')+'" onclick="doSave(event,\''+t.id+'\')">'+(sv?'🔖':'🏷️')+'</button>'
+        +'</div>'
+        +'<div class="card-desc">'+esc(t.desc)+'</div>'
+        +'<div class="card-foot">'
+          +'<span class="ctag">'+(CAT_LABELS[t.cat]||t.cat)+'</span>'
+          +'<span class="ctim">🕐 '+t.time+' min</span>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+  }
+
+  function stats() {
+    const s = State.get();
+    const readCount = s.readIds.length;
+    const total     = s.topics.length;
+    const cats      = {};
+    s.topics.forEach(t=>{ if(State.isRead(t.id)) cats[t.cat]=1; });
+    const catCount  = Object.keys(cats).length;
+    const pct       = total>0 ? Math.round(readCount/total*100) : 0;
+    document.getElementById('N_sRead').textContent  = readCount;
+    document.getElementById('N_sTotal').textContent = total;
+    document.getElementById('N_sCats').textContent  = catCount;
+    document.getElementById('N_pct').textContent    = pct+'%';
+    document.getElementById('N_progFill').style.width = pct+'%';
+    document.getElementById('N_streak').textContent = s.streak;
+  }
+
+  return { hero, filters, grid, stats };
+})();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PANEL
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const articleCache = {}; // topicId -> html
+let currentTopicId = null;
+
+const Panel = (() => {
+  function open(topicId) {
+    const s = State.get();
+    const topic = s.topics.find(t=>t.id===topicId);
+    if (!topic) return;
+    currentTopicId = topicId;
+
+    // Header
+    const catEl = document.getElementById('N_pCat');
+    catEl.textContent = CAT_LABELS[topic.cat]||topic.cat;
+    catEl.style.color = CAT_COLORS[topic.cat]||'#888';
+    document.getElementById('N_pTitle').textContent = topic.title;
+    document.getElementById('N_pTime').textContent  = topic.time+' min read';
+    document.getElementById('N_pDiff').textContent  = topic.diff||'Intermediate';
+
+    // Mark button — reset fresh each open
+    const btn = document.getElementById('N_markBtn');
+    const alreadyRead = State.isRead(topicId);
+    btn.textContent = alreadyRead ? '✓ Already read' : '✓ Mark as read';
+    btn.disabled    = alreadyRead;
+    btn.className   = 'mark-btn'+(alreadyRead?' done':'');
+
+    // Show overlay
+    document.getElementById('N_overlay').classList.add('open');
+    document.body.style.overflow='hidden';
+
+    // Load article
+    const contentEl = document.getElementById('N_pContent');
+    if (articleCache[topicId]) {
+      contentEl.innerHTML = articleCache[topicId];
+      return;
+    }
+    // Skeleton
+    contentEl.innerHTML = skeletons();
+
+    if (!API.getKey()) {
+      contentEl.innerHTML =
+        '<div style="text-align:center;padding:2rem 0">'
+        +'<div style="font-size:2rem;margin-bottom:0.7rem">🔑</div>'
+        +'<p style="font-weight:600;color:var(--ink);margin-bottom:0.4rem">API key needed</p>'
+        +'<p style="font-size:0.79rem;color:var(--ink3);margin-bottom:1rem">Add your free Groq key to read articles and unlock new topics.</p>'
+        +'<button onclick="close();UI.openKeyModal()" style="padding:8px 18px;background:var(--ink);color:#fff;border:none;border-radius:var(--rsm);font-family:\'DM Sans\',sans-serif;font-size:0.81rem;font-weight:600;cursor:pointer">Set API Key (Free)</button>'
+        +'</div>';
+      return;
+    }
+
+    API.fetchArticle(topic)
+      .then(html => {
+        articleCache[topicId] = html;
+        if (currentTopicId===topicId) document.getElementById('N_pContent').innerHTML=html;
+      })
+      .catch(err => {
+        if (currentTopicId!==topicId) return;
+        let hint='Check your internet connection and try again.';
+        const m=err.message||'';
+        if (m.includes('invalid')||m.includes('Invalid')||m.includes('auth')) hint='API key invalid — tap ⚙️ to update it.';
+        else if (m.includes('quota')||m.includes('rate')||m.includes('429')) hint='Rate limit reached — wait a moment and reopen the article.';
+        document.getElementById('N_pContent').innerHTML=
+          '<div style="text-align:center;padding:2rem 0">'
+          +'<div style="font-size:1.7rem;margin-bottom:0.5rem">⚠️</div>'
+          +'<p style="font-weight:600;color:var(--ink);margin-bottom:0.3rem">Couldn\'t load article</p>'
+          +'<p style="font-size:0.79rem;color:var(--ink3)">'+hint+'</p>'
+          +'</div>';
+      });
+  }
+
+  function close() {
+    document.getElementById('N_overlay').classList.remove('open');
+    document.body.style.overflow='';
+    currentTopicId=null;
+  }
+
+  function markRead() {
+    if (!currentTopicId) return;
+    const topicId = currentTopicId; // local copy — safe even if panel closes
+    const wasNew = State.markRead(topicId); // returns false if already read
+    if (!wasNew) return;
+
+    // Update button
+    const btn = document.getElementById('N_markBtn');
+    btn.textContent='✓ Marked as read!';
+    btn.classList.add('done');
+    btn.disabled=true;
+
+    // Refresh stats and grid
+    Render.stats();
+    Render.grid();
+
+    // Generate new topics in background
+    const topic = State.get().topics.find(t=>t.id===topicId);
+    if (topic) {
+      setTimeout(()=>API.generateTopics(topic), 600);
+    }
+  }
+
+  return { open, close, markRead };
+})();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UI HELPERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const UI = {
+  openKeyModal() {
+    const key = API.getKey();
+    const existRow = document.getElementById('N_keyExist');
+    if (key) {
+      existRow.classList.add('show');
+      document.getElementById('N_keyPreview').textContent = key.slice(-6);
+      document.getElementById('N_keySave').textContent = 'Update key';
+    } else {
+      existRow.classList.remove('show');
+      document.getElementById('N_keySave').textContent = 'Save & start reading';
+    }
+    document.getElementById('N_keyInput').value='';
+    document.getElementById('N_keySave').disabled=true;
+    document.getElementById('N_keyErr').classList.remove('show');
+    document.getElementById('N_keyOverlay').classList.add('open');
+  },
+  toggleKeyVis() {
+    const inp=document.getElementById('N_keyInput');
+    const btn=document.getElementById('N_keyTog');
+    inp.type=inp.type==='password'?'text':'password';
+    btn.textContent=inp.type==='password'?'Show':'Hide';
+  },
+  openSearch() {
+    document.getElementById('N_searchOverlay').classList.add('open');
+    document.getElementById('N_searchInput').value='';
+    document.getElementById('N_searchResults').innerHTML='';
+    document.body.style.overflow='hidden';
+    setTimeout(()=>document.getElementById('N_searchInput').focus(),80);
+  },
+  closeSearch() {
+    document.getElementById('N_searchOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  },
+  showToast(msg){
+    document.getElementById('N_toastMsg').textContent=msg;
+    document.getElementById('N_toast').classList.add('show');
+  },
+  hideToast(){ document.getElementById('N_toast').classList.remove('show'); }
+};
+
+// Expose for inline onclick
+function setFilter(cat) { activeFilter=cat; Render.filters(); Render.grid(); }
+function doSave(e,id)   { e.stopPropagation(); State.toggleSave(id); Render.grid(); }
+function esc(s)         { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function skeletons()    {
+  return ['75%','100%','90%','80%','100%','60%','55%','100%','85%'].map(w=>
+    '<div class="skel" style="height:'+(w==='55%'||w==='75%'?'13px':'10px')+';width:'+w+'"></div>'
+  ).join('');
 }
 
-function markRead(){
-  const btn = document.getElementById('mark-btn');
-  if(!currentTopic){ return; }
-  const topicId = currentTopic.id;
-  if([...state.readIds].includes(topicId)) return;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EVENT LISTENERS — all via addEventListener, no onclick on critical elements
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+document.getElementById('N_overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('N_overlay')) Panel.close();
+});
+document.getElementById('N_searchOverlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('N_searchOverlay')) UI.closeSearch();
+});
+document.getElementById('N_pClose').addEventListener('click', Panel.close);
+document.getElementById('N_searchClose').addEventListener('click', UI.closeSearch);
 
-  // Update button immediately
-  if(btn){ btn.innerHTML='✓ Marked as read!'; btn.classList.add('done'); btn.disabled=true; }
-
-  // Add to read set and persist
-  state.readIds.add(topicId);
-  updateStreak();
-  saveState();
-
-  // Update UI
-  updateStats();
-  renderGrid();
-
-  // Generate new topics after a short delay
-  const t = state.topics.find(x=>x.id===topicId);
-  if(t) setTimeout(()=>generateNewTopics(t), 500);
-}
-
-function updateStreak(){
-  const today = new Date().toDateString();
-  if(state.lastReadDate===today) return;
-  const yesterday = new Date(Date.now()-86400000).toDateString();
-  if(state.lastReadDate===yesterday) state.streak++;
-  else if(state.lastReadDate!==today) state.streak=1;
-  state.lastReadDate = today;
-}
-
-function toggleSave(e,id){
+// Mark as read — single reliable listener
+document.getElementById('N_markBtn').addEventListener('click', function(e){
   e.stopPropagation();
-  if(state.savedIds.has(id)) state.savedIds.delete(id);
-  else state.savedIds.add(id);
-  saveState();
-  renderGrid();
-}
+  Panel.markRead();
+});
 
-function closePanel(){
-  document.getElementById('overlay').classList.remove('open');
-  document.body.style.overflow='';
-  currentTopic=null;
-}
+// Key input enable/disable save button
+document.getElementById('N_keyInput').addEventListener('input', function(){
+  document.getElementById('N_keySave').disabled = this.value.trim().length < 20;
+  document.getElementById('N_keyErr').classList.remove('show');
+});
 
-function overlayClick(e){ if(e.target===document.getElementById('overlay')) closePanel(); }
+// Search
+document.getElementById('N_searchInput').addEventListener('input', function(){
+  const q=this.value.toLowerCase().trim();
+  const el=document.getElementById('N_searchResults');
+  if(!q){el.innerHTML='';return;}
+  const found=State.get().topics.filter(t=>
+    t.title.toLowerCase().includes(q)||
+    t.desc.toLowerCase().includes(q)||
+    (CAT_LABELS[t.cat]||'').toLowerCase().includes(q)
+  );
+  if(!found.length){
+    el.innerHTML='<p style="padding:0.8rem 0;color:var(--ink3);font-size:0.81rem">No topics found.</p>';
+    return;
+  }
+  el.innerHTML=found.map(t=>
+    '<div style="padding:0.7rem 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="UI.closeSearch();Panel.open(\''+t.id+'\')">'
+    +'<div style="font-size:0.84rem;font-weight:500;color:var(--ink)">'+esc(t.title)+'</div>'
+    +'<div style="font-size:0.69rem;color:var(--ink3);margin-top:2px">'+(CAT_LABELS[t.cat]||t.cat)+' · '+t.time+' min · '+(State.isRead(t.id)?'✓ Read':'Unread')+'</div>'
+    +'</div>'
+  ).join('');
+});
 
-function openSearch(){
-  document.getElementById('search-modal').classList.add('open');
-  document.getElementById('search-input').value='';
-  document.getElementById('search-results').innerHTML='';
-  setTimeout(()=>document.getElementById('search-input').focus(),100);
-}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ Panel.close(); UI.closeSearch(); }
+});
 
-function closeSearch(){ document.getElementById('search-modal').classList.remove('open'); }
-function searchOverlayClick(e){ if(e.target===document.getElementById('search-modal')) closeSearch(); }
-
-function doSearch(){
-  const q = document.getElementById('search-input').value.toLowerCase().trim();
-  const el = document.getElementById('search-results');
-  if(!q){ el.innerHTML=''; return; }
-  const found = state.topics.filter(t=>t.title.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q)||(CAT_LABELS[t.cat]||t.cat).toLowerCase().includes(q));
-  if(!found.length){ el.innerHTML=`<div class="search-empty">No topics found for "${q}"</div>`; return; }
-  el.innerHTML = found.map(t=>`<div class="search-item" onclick="searchSelect('${t.id}')">
-    <div class="search-item-title">${t.title}</div>
-    <div class="search-item-cat">${CAT_LABELS[t.cat]||t.cat} · ${t.time} min</div>
-  </div>`).join('');
-}
-
-function searchSelect(id){
-  closeSearch();
-  const t = state.topics.find(x=>x.id===id);
-  if(t) openPanel(t);
-}
-
-function showToast(msg){ const el=document.getElementById('toast'); document.getElementById('toast-msg').textContent=msg; el.classList.add('show'); }
-function hideToast(){ document.getElementById('toast').classList.remove('show'); }
-
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePanel(); closeSearch(); } });
-
-loadState();
-initHero();
-initFilters();
-renderGrid();
-updateStats();
-updateKeyNavBtn();
-if(!getApiKey()) openApiKey(false);
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+State.load();
+Render.hero();
+Render.filters();
+Render.grid();
+Render.stats();
+if (API.getKey()) document.getElementById('N_keybtn').style.color='var(--green)';
+else UI.openKeyModal();
 </script>
 </body>
 </html>
